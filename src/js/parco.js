@@ -32,16 +32,7 @@
       }
     }
     infoWindows.push(infoWindow);
-    // infoWindow.bubble.open(map, marker);
     return infoWindow;
-  }
-
-  function toggleBounce(marker) {
-    if (marker.getAnimation() !== null) {
-      marker.setAnimation(null);
-    } else {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
   }
 
   function createTrack(lat, lng, title, videoUrl) {
@@ -55,7 +46,6 @@
     var infoWindow = createInfoWindow(marker, videoUrl);
     google.maps.event.addListener(marker, 'click', function() {
       infoWindow.open();
-      toggleBounce(marker);
     });
     var track = {
       marker: marker,
@@ -75,13 +65,7 @@
     var track03 = createTrack(42.4916599, 12.2475933, 'Track 03', 'https://www.youtube.com/embed/sXvbYFdCIuI');
     var track04 = createTrack(42.49022447, 12.2473231, 'Track 04', 'https://www.youtube.com/embed/sXvbYFdCIuI');
 
-    // google.maps.event.addListener(track01.marker, 'click', function() { createInfoWindow(track01.marker, track01.video) });
-    // google.maps.event.addListener(marker1, 'click', function() { createInfoWindow(marker2) });
-
-    // var windowTest = createInfoWindow(track01.marker, track01.video);
-    // windowTest.open();
     track01.infoWindow.open();
-    console.log(track01);
     centerMap();
 
   }
