@@ -1,17 +1,22 @@
 (function() {
 
   var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
-  var parcoEl = document.getElementById('parco');
+  var parcoEl = document.querySelector('.parco');
+  var dummyEl = document.querySelector('.dummy');
   var map = undefined;
-  var mapProperties = {
-    center: { lat: 42, lng: 12 },
-    zoom: 16
-  };
-  var tracks = [];
+  var tracks = [
+    {lat: 42.49093649, lng: 12.24605709, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
+    {lat: 42.49030358, lng: 12.24529803, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
+    {lat: 42.4916599, lng: 12.2475933, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'},
+    {lat: 42.49022447, lng: 12.2473231, title: 'marker 04', url: 'https://www.youtube.com/embed/sXvbYFdCIuI'}
+  ];
+  var markers = [];
   var infoWindows = [];
 
-  function centerMap() {
-    map.panTo({ lat: tracks[0].position.lat, lng: tracks[0].position.lng });
+  function centerMap(lat, lng) {
+    lat = lat || 42.49093649;
+    lng = lng || 12.24605709;
+    map.panTo({ lat: lat, lng: lng });
   }
 
   function zoomMap(zoom) {
@@ -35,7 +40,7 @@
     return infoWindow;
   }
 
-  function createTrack(lat, lng, title, videoUrl) {
+  function createMarker(lat, lng, title, videoUrl) {
     var position = { lat: lat, lng: lng };
     var marker = new google.maps.Marker({
       map: map,
@@ -47,27 +52,49 @@
     google.maps.event.addListener(marker, 'click', function() {
       infoWindow.open();
     });
-    var track = {
+    var marker = {
       marker: marker,
       position: position,
       infoWindow: infoWindow
     }
-    tracks.push(track);
-    return track;
+    markers.push(marker);
+    centerMap(lat, lng);
+    return marker;
+  }
+
+  function intro() {
+    var i = 0;
+    var interval = setInterval(function() {
+      if (i < tracks.length) {
+        var track  = tracks[i];
+        createMarker(track.lat, track.lng, track.title, track.url);
+        i++;
+      } else {
+        centerMap(tracks[0].lat, tracks[0].lng);
+        markers[0].infoWindow.open();
+        clearInterval(interval);
+      }
+    }, 750);
   }
 
   function initMap() {
-
-    map = new google.maps.Map(parcoEl, mapProperties);
-
-    var track01 = createTrack(42.4915061, 12.24431098, 'Pegaso', 'https://www.youtube.com/embed/t-UT4VXK4WQ');
-    var track02 = createTrack(42.49030358, 12.24529803, 'Ninfeo', 'https://www.youtube.com/embed/WPzrVNxqS0A');
-    var track03 = createTrack(42.4916599, 12.2475933, 'Track 03', 'https://www.youtube.com/embed/sXvbYFdCIuI');
-    var track04 = createTrack(42.49022447, 12.2473231, 'Track 04', 'https://www.youtube.com/embed/sXvbYFdCIuI');
-
-    track01.infoWindow.open();
-    centerMap();
-
+    map = new google.maps.Map(parcoEl, {
+      center: { lat: 42.49093649, lng: 12.24605709 },
+      zoom: 17,
+      disableDefaultUI: true,
+      zoomControl: true,
+      streetViewControl: true,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+      },
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.TOP_RIGHT
+      },
+      // mapTypeId: google.maps.MapTypeId.SATELLITE
+    });
+    intro();
   }
 
   window.map = {
