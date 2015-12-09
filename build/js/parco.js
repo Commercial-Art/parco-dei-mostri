@@ -5,7 +5,7 @@
   var dummyEl = document.querySelector('.dummy');
   var titleEl = document.querySelector('.title');
   var map = undefined;
-  var initialZoom = 19;
+  var initialZoom = 17;
   var tracks = [
     {lat: 42.49093649, lng: 12.24605709, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
     {lat: 42.49030358, lng: 12.24529803, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
@@ -64,43 +64,22 @@
     return marker;
   }
 
-  function bounceMarker(marker, time) {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function() {
-      marker.setAnimation(null);
-    }, time);
-  }
-
-  function bounceMarkers() {
-    var i = 0;
-    var interval = setInterval(function() {
-      if (i < markers.length) {
-        bounceMarker(markers[i].marker, 690);
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 200);
-  }
-
   function intro() {
     var i = 0;
     var interval = setInterval(function() {
       if (i < tracks.length) {
         var track  = tracks[i];
         createMarker(track.lat, track.lng, track.title, track.url);
-        setTimeout(function() {
-          initialZoom--;
-          zoomMap(initialZoom);
-        }, 500);
         i++;
       } else {
-        centerMap(tracks[0].lat, tracks[0].lng);
-        markers[0].infoWindow.open();
+        zoomMap(initialZoom - 1);
+        setTimeout(function() {
+          centerMap(tracks[0].lat, tracks[0].lng);
+          markers[0].infoWindow.open();
+        }, 500);
         setTimeout(function() {
           titleEl.classList.add('active');
-          bounceMarkers();
-        }, 500);
+        }, 1000);
         clearInterval(interval);
       }
     }, 1000);
@@ -111,7 +90,10 @@
       center: { lat: 42.49093649, lng: 12.24605709 },
       zoom: initialZoom,
       disableDefaultUI: true,
-      zoomControl: true,
+      // zoomControl: true,
+      // zoomControlOptions: {
+      //   style: google.maps.ZoomControlStyle.SMALL
+      // },
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
