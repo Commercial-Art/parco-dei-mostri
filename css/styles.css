@@ -21,11 +21,17 @@ body {
 }
 
 .title {
+  opacity: 0;
   position: fixed;
   z-index: 1;
   left: 30px;
   top: 30px;
   width: 100px;
+  transition: opacity 1s ease;
+}
+
+.title.active {
+  opacity: 1;
 }
 
 .title h1 {
