@@ -8,14 +8,14 @@
   var infoEl = document.querySelector('.infos');
   var map = undefined;
   var initialZoom = 16;
+  var markers = [];
+  var infoWindows = [];
   var tracks = [
     {lat: 42.49135927, lng: 12.24643459, title: 'Mausoleo', url: 'https://www.youtube.com/embed/1IDG_X0Kq5Y'},
     {lat: 42.49056815, lng: 12.24750747, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
     {lat: 42.49120105, lng: 12.24428882, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
     {lat: 42.49055232, lng: 12.24512567, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'}
   ];
-  var markers = [];
-  var infoWindows = [];
 
   function centerMap(lat, lng) {
     lat = lat || tracks[0].lat;
@@ -91,10 +91,16 @@
   }
 
   function toggleInfos() {
-    infoEl.addEventListener(activate, function() {
-      parcoEl.classList.add('expanded');
+    infoEl.addEventListener(activate, function(event) {
+      // make sur the links are not clicked on the first tap
+      if (parcoEl.classList.contains('expanded')) {
+        return false;
+      } else {
+        parcoEl.classList.add('expanded');
+        event.preventDefault();
+      }
     });
-    mapEl.addEventListener(activate, function() {
+    mapEl.addEventListener(activate, function(event) {
       parcoEl.classList.remove('expanded');
     });
   }
@@ -113,14 +119,12 @@
     });
     setTimeout(function() {
       intro(400);
-    }, 1000);
+    }, 1400);
     toggleInfos();
   }
 
   window.map = {
-    init: initMap,
-    center: centerMap,
-    zoom: zoomMap
+    init: initMap
   }
 
 })();
