@@ -9,10 +9,10 @@
   var map = undefined;
   var initialZoom = 16;
   var tracks = [
-    {lat: 42.49120105, lng: 12.24428882, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
-    {lat: 42.49055232, lng: 12.24512567, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
-    {lat: 42.49135927, lng: 12.24643459, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'},
-    {lat: 42.49056815, lng: 12.24750747, title: 'marker 04', url: 'https://www.youtube.com/embed/sXvbYFdCIuI'}
+    {lat: 42.49135927, lng: 12.24643459, title: 'Mausoleo', url: 'https://www.youtube.com/embed/1IDG_X0Kq5Y'},
+    {lat: 42.49056815, lng: 12.24750747, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
+    {lat: 42.49120105, lng: 12.24428882, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
+    {lat: 42.49055232, lng: 12.24512567, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'}
   ];
   var markers = [];
   var infoWindows = [];
@@ -46,23 +46,22 @@
 
   function createMarker(lat, lng, title, videoUrl) {
     var position = { lat: lat, lng: lng };
-    var marker = new google.maps.Marker({
+    var markerEl = new google.maps.Marker({
       map: map,
       title: title,
       animation: google.maps.Animation.DROP,
       position: position
     });
-    var infoWindow = createInfoWindow(marker, videoUrl);
-    google.maps.event.addListener(marker, 'click', function() {
+    var infoWindow = createInfoWindow(markerEl, videoUrl);
+    google.maps.event.addListener(markerEl, 'click', function() {
       infoWindow.open();
     });
     var marker = {
-      marker: marker,
+      marker: markerEl,
       position: position,
       infoWindow: infoWindow
     }
     markers.push(marker);
-    centerMap(lat, lng);
     return marker;
   }
 
@@ -74,19 +73,18 @@
         createMarker(track.lat, track.lng, track.title, track.url);
         i++;
       } else {
-        markers[0].infoWindow.open();
-        setTimeout(function() {
-          centerMap(tracks[0].lat, tracks[0].lng);
-        }, speed * .25);
         setTimeout(function() {
           zoomMap(initialZoom - 1);
-        }, speed * .5);
+        }, 400);
+        setTimeout(function() {
+          markers[0].infoWindow.open();
+        }, 1000);
         setTimeout(function() {
           centerMap(tracks[0].lat+.0015, tracks[0].lng);
-        }, speed * .75);
+        }, 1400);
         setTimeout(function() {
-          infoEl.classList.add('active');
-        }, speed);
+          parcoEl.classList.add('show-infos');
+        }, 1800);
         clearInterval(interval);
       }
     }, speed);
@@ -106,10 +104,6 @@
       center: { lat: tracks[0].lat, lng: tracks[0].lng },
       zoom: initialZoom,
       disableDefaultUI: true,
-      // zoomControl: true,
-      // zoomControlOptions: {
-      //   style: google.maps.ZoomControlStyle.SMALL
-      // },
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -117,7 +111,9 @@
       },
       mapTypeId: google.maps.MapTypeId.TERRAIN
     });
-    intro(900);
+    setTimeout(function() {
+      intro(400);
+    }, 1000);
     toggleInfos();
   }
 
