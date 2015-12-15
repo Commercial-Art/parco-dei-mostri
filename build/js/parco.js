@@ -1,16 +1,18 @@
 (function() {
 
   var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
+  var activate = (isTouch ? 'touchstart' : 'mouseover');
   var parcoEl = document.querySelector('.parco');
+  var mapEl = document.querySelector('.map');
   var dummyEl = document.querySelector('.dummy');
-  var titleEl = document.querySelector('.title');
+  var infoEl = document.querySelector('.infos');
   var map = undefined;
-  var initialZoom = 17;
+  var initialZoom = 16;
   var tracks = [
-    {lat: 42.49093649, lng: 12.24605709, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
-    {lat: 42.49030358, lng: 12.24529803, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
-    {lat: 42.4916599, lng: 12.2475933, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'},
-    {lat: 42.49022447, lng: 12.2473231, title: 'marker 04', url: 'https://www.youtube.com/embed/sXvbYFdCIuI'}
+    {lat: 42.49120105, lng: 12.24428882, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
+    {lat: 42.49055232, lng: 12.24512567, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
+    {lat: 42.49135927, lng: 12.24643459, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'},
+    {lat: 42.49056815, lng: 12.24750747, title: 'marker 04', url: 'https://www.youtube.com/embed/sXvbYFdCIuI'}
   ];
   var markers = [];
   var infoWindows = [];
@@ -83,15 +85,24 @@
           centerMap(tracks[0].lat+.0015, tracks[0].lng);
         }, speed * .75);
         setTimeout(function() {
-          titleEl.classList.add('active');
+          infoEl.classList.add('active');
         }, speed);
         clearInterval(interval);
       }
     }, speed);
   }
 
+  function toggleInfos() {
+    infoEl.addEventListener(activate, function() {
+      parcoEl.classList.add('expanded');
+    });
+    mapEl.addEventListener(activate, function() {
+      parcoEl.classList.remove('expanded');
+    });
+  }
+
   function initMap() {
-    map = new google.maps.Map(parcoEl, {
+    map = new google.maps.Map(mapEl, {
       center: { lat: tracks[0].lat, lng: tracks[0].lng },
       zoom: initialZoom,
       disableDefaultUI: true,
@@ -107,6 +118,7 @@
       mapTypeId: google.maps.MapTypeId.TERRAIN
     });
     intro(900);
+    toggleInfos();
   }
 
   window.map = {
