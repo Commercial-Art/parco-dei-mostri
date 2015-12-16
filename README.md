@@ -1,3 +1,7 @@
+http://sacrobosco.voyage
+http://cantinacool.bandcamp.com
+http://soundcloud.com/cantinacool
+
 ```
 
          `'#@@@#'`               ##+';:`                                 :##@@@@##:`          ##'::'####'.                            `'#@@@@##.
