@@ -14,7 +14,7 @@
     {lat: 42.49135927, lng: 12.24643459, title: 'Mausoleo', url: 'https://www.youtube.com/embed/1IDG_X0Kq5Y'},
     {lat: 42.49056815, lng: 12.24750747, title: 'Pegaso', url: 'https://www.youtube.com/embed/t-UT4VXK4WQ'},
     {lat: 42.49120105, lng: 12.24428882, title: 'Ninfeo', url: 'https://www.youtube.com/embed/WPzrVNxqS0A'},
-    {lat: 42.49055232, lng: 12.24512567, title: 'Mostri', url: 'https://www.youtube.com/embed/LpwosTzPnMQ'}
+    {lat: 42.49055232, lng: 12.24512567, title: 'Mostri', url: 'https://www.youtube.com/embed/ASBjguw8QQo'}
   ];
 
   function centerMap(lat, lng) {
