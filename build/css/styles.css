@@ -57,7 +57,8 @@ body {
   padding: 1rem;
 }
 
-.infos h1 {
+.infos h1,
+.infos .cover {
   position: absolute;
   z-index: -1;
   left: 0;
